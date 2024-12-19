@@ -1,0 +1,23 @@
+### create a user
+POST http://localhost:5000/api/users/create-user
+Content-Type: application/json
+
+{"name":"Marcus Raising", "email" : "jmarcus@yahoo.com","password":"dhshddddoeddn@1dcfdr"}
+
+### get all users
+GET http://localhost:5000/api/users
+
+### get a user by id
+GET http://localhost:5000/api/users/675d685a1842ae928ac3276f
+
+### get user by email
+GET http://localhost:5000/api/users/email/johndo@gmail.com
+
+### update a user by id
+PATCH  http://localhost:5000/api/users/6761cd5cecb78c319492926a
+Content-Type: application/json
+
+{"password":"gfhdhgegfs123"}
+
+### delete a user by id
+DELETE  http://localhost:5000/api/users/delete/67631cccde584ba131e159c3
