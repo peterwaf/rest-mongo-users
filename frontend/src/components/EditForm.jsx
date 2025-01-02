@@ -28,15 +28,6 @@ function EditForm({ updateEditStatus, selectedUser, handleUserChange,handleUserS
           value={selectedUser.email}
           onChange={handleUserChange}
         />
-        <input
-          type="password"
-          className="w-full p-2"
-          name="password"
-          id="password"
-          placeholder="Password"
-          value={selectedUser.password}
-          onChange={handleUserChange}
-        />
         <button className="text-white p-2 mt-2 mb-2 border-orange-300 border-2 m-2">
           Save
         </button>

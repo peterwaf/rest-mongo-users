@@ -2,7 +2,7 @@
 POST http://localhost:5000/api/users/create-user
 Content-Type: application/json
 
-{"name":"Marcus Raising", "email" : "jmarcus@yahoo.com","password":"dhshddddoeddn@1dcfdr"}
+{"name":"Mary Maina", "email" : "mmaina@yahoo.com","password":"123456"}
 
 ### get all users
 GET http://localhost:5000/api/users

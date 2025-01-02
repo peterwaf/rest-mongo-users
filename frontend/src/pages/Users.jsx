@@ -75,6 +75,34 @@ function Users() {
     }
   };
 
+  // delete a user
+
+  const deleteUser = async (userId) => {
+    try {
+      const selectedUser = await axios.get(
+        `http://localhost:5000/api/users/${userId}`
+      );
+      const selectedUserEmail = selectedUser.data.email;
+      const confirmDelete = confirm(
+        `Are you sure you want to delete the user with email ${selectedUserEmail} ?`
+      );
+      if (!confirmDelete) {
+        setIsError(false);
+        return;
+      }
+      await axios.delete(`http://localhost:5000/api/users/delete/${userId}`);
+
+      //update usersList
+      
+      const newUsersArr = users.filter((user) => user._id != userId);
+      setUsers(newUsersArr);
+      setIsError(false);
+    } catch (error) {
+      setIsError(true);
+      setPageError(error.message);
+    }
+  };
+
   return (
     <div id="users" className="w-full bg-orange-300 h-screen">
       {editing && (
@@ -113,7 +141,12 @@ function Users() {
               </button>
             </div>
             <div className="p-3 text-left">
-              <button className="border-orange-300 border-2 w-full p-2">
+              <button
+                onClick={() => {
+                  deleteUser(user._id);
+                }}
+                className="border-orange-300 border-2 w-full p-2"
+              >
                 Delete
               </button>
             </div>

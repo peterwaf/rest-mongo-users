@@ -3,10 +3,12 @@ const User = require("../models/User");
 
 const router = express.Router();
 
+
 //create user
 
 router.post("/create-user", async (req, res) => {
   //check if user fields are filled
+  
 
   if (!req.body.name || !req.body.email || !req.body.password) {
     return res.status(401).json({ message: "All fields are required" });
@@ -36,6 +38,7 @@ router.post("/create-user", async (req, res) => {
 //get all users
 
 router.get("/", async (req, res) => {
+  
   try {
     const users = await User.find();
     res.status(200).json(users);
