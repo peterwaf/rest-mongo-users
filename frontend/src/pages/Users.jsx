@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import EditForm from "../components/EditForm";
 import ErrorContainer from "../components/ErrorContainer";
+import AddUsersForm from "../components/AddUsersForm";
 
 function Users() {
   const [users, setUsers] = useState([]);
@@ -14,6 +15,7 @@ function Users() {
     email: "",
     password: "",
   });
+  const [isAddingUser, setIsAddingUser] = useState(false);
 
   //load users function
 
@@ -22,7 +24,7 @@ function Users() {
       const dbUsers = await axios.get("http://localhost:5000/api/users");
       setUsers(dbUsers.data);
     } catch (error) {
-      setPageError(error.message);
+      setPageError(error.response.data.message);
     }
   };
 
@@ -36,6 +38,12 @@ function Users() {
 
   const updateEditStatus = () => {
     setEditing(!editing);
+  };
+
+  // check if the user clicked the add user button
+
+  const updateAddingStatus = () => {
+    setIsAddingUser(!isAddingUser);
   };
 
   //handle user data change
@@ -69,7 +77,7 @@ function Users() {
       setEditing(!editing);
       setIsError(false);
     } catch (error) {
-      setPageError(error.message);
+      setPageError(error.response.data.message);
       setIsError(true);
       setEditing(!editing);
     }
@@ -93,13 +101,48 @@ function Users() {
       await axios.delete(`http://localhost:5000/api/users/delete/${userId}`);
 
       //update usersList
-      
+
       const newUsersArr = users.filter((user) => user._id != userId);
       setUsers(newUsersArr);
       setIsError(false);
     } catch (error) {
       setIsError(true);
-      setPageError(error.message);
+      setPageError(error.response.data.message);
+    }
+  };
+
+  // add a user
+
+  const addUser = async (user) => {
+    //add user to the db
+    try {
+      await axios.post(
+        "http://localhost:5000/api/users/create-user",
+        {
+          name: user.name,
+          email: user.email,
+          password: user.password,
+        },
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      //update users state
+
+      const addedUserData = await axios.get(
+        `http://localhost:5000/api/users/email/${user.email}`
+      );
+      const addedUser = addedUserData.data.user;
+      setUsers((prevUsers) => {
+        return [...prevUsers, addedUser];
+      });
+      //update Adding status;
+      setIsError(false);
+      updateAddingStatus();
+    } catch (error) {
+      console.log(error)
+      setPageError(error.response.data.message);
+      setIsError(true);
+      updateAddingStatus();
     }
   };
 
@@ -114,7 +157,25 @@ function Users() {
         />
       )}
 
-      <h1 className="p-3 text-center font-bold">Users</h1>
+      {isAddingUser && (
+        <AddUsersForm
+          updateAddingStatus={updateAddingStatus}
+          addUser={addUser}
+        />
+      )}
+
+      <h1 className="p-3 text-center font-bold underline">Users </h1>
+      <div className="text-center">
+        <button
+          onClick={() => {
+            setIsAddingUser(!isAddingUser);
+          }}
+          className="border-2 font-bold border-white m-2 mx-auto p-2"
+        >
+          Add User
+        </button>{" "}
+      </div>
+
       {isError && <ErrorContainer pageError={pageError} />}
       <div className="grid gap-1 lg:grid-cols-5 pt-4 pb-4 bg-black font-bold text-white">
         <div className="p-3 text-left">User Id</div>

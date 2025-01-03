@@ -8,13 +8,7 @@ function Home() {
         className="h-[600px] flex flex-col justify-center align-middle"
       >
         <div className="flex flex-col justify-center align-center bg-black bg-opacity-50 rounded w-[400px] h-[400px] text-center mx-auto">
-          <h1 className="text-4xl py-4 text-white font-bold">Users App</h1>
-          <a
-            href="#"
-            className="text-orange-400 w-[200px] border my-2 p-2 mx-auto"
-          >
-            Sign Up
-          </a>
+          <h1 className="text-4xl py-4 text-white font-bold">System Users</h1>
           <a
             href="#"
             className="text-orange-400 w-[200px] border my-2 p-2 mx-auto"
